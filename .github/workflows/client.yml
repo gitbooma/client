@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+     - name: checkout
+       uses: actions/checkout@v3
+     - name: Load .env file
+       uses: xom9ikk/dotenv@v1.0.2
+       with:
+          path: ./
+          mode: ''
+     - name: Some other action
+       run: |
+          echo "THEME: ${{ env.THEME }}"
+          echo "github $THEME"
+     - name: Login to DockerHub
+       uses: docker/login-action@v2
+       with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+     - name: build and publish
+       uses: gitbooma/docker-push@v2.1.3
+       with:
+        docker_compose: 'docker-compose.yml'
