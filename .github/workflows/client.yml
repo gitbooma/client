@@ -25,6 +25,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
      - name: build and publish
-       uses: gitbooma/docker-push@v2.1.6
+       uses: gitbooma/docker-push@v2.1.7
        with:
         docker_compose: 'docker-compose.yml'
