@@ -15,7 +15,7 @@ on:
         default: 'default'
 
 env:
-  FRONTEND_THEME: ${{ inputs.FRANTEND_THEME }}
+  FRONTEND_THEME: ${{ github.event.inputs.FRANTEND_THEME }}
   
 jobs:
   docker:
@@ -42,5 +42,5 @@ jobs:
       - name: Get the Theme
         run: |
           echo "Frontend_Theme: ${{ github.event.inputs.FRONTEND_THEME }}"
-          echo "Frontend_Theme: ${{ inputs.FRANTEND_THEME }}"
+          echo ${{ github.event.inputs.FRONTEND_THEME }}
       
