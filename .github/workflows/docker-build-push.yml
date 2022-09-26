@@ -9,7 +9,7 @@ on:
     
   workflow_dispatch:
     inputs:
-      frontend_theme:
+      FRONTEND_THEME:
         description: 'Provide Frontend Theme'     
         required: true
         default: 'default'
@@ -38,8 +38,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Get the Theme
         run: |
-          echo "Frontend_Theme: ${{ github.event.inputs.frontend_theme }}"
-          echo "Frontend_Theme: ${{ inputs.frontend_theme }}"
+          echo "Frontend_Theme: ${{ github.event.inputs.FRONTEND_THEME }}"
+          echo "Frontend_Theme: ${{ inputs.FRANTEND_THEME }}"
       -
         name: Build and push
         uses: docker/build-push-action@v3
