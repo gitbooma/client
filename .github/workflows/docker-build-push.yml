@@ -43,4 +43,11 @@ jobs:
         run: |
           echo "Frontend_Theme: ${{ github.event.inputs.FRONTEND_THEME }}"
           echo ${{ github.event.inputs.FRONTEND_THEME }}
-      
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}    
