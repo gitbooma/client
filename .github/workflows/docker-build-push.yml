@@ -15,7 +15,7 @@ on:
         default: 'default'
 
 env:
-  FRONTEND_THEME: ${{ github.event.inputs.FRANTEND_THEME }}
+  FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }}
   
 jobs:
   docker:
