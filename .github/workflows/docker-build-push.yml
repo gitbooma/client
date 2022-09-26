@@ -32,7 +32,7 @@ jobs:
           # list of Docker images to use as base name for tags
           images: boomadevops/infocompass-client-theme
           tags: |
-            type=raw,value=${{FRONTEND_THEME}}-{{sha}}
+            type=raw,value=${{env.FRONTEND_THEME}}-{{sha}}
       -
         name: Login to DockerHub
         uses: docker/login-action@v2
