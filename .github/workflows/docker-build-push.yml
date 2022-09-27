@@ -9,12 +9,13 @@ on:
     inputs:
       FRONTEND_THEME:
         description: 'Provide Frontend Theme'     
-        required: true        
+        required: true
+        default: 'default'
 
 env:
   if: ${{ github.event_name == 'push' }}
   FRONTEND_THEME: default
-  
+    
 jobs:
   docker:
     runs-on: ubuntu-latest
