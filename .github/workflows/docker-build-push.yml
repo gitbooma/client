@@ -20,7 +20,7 @@ jobs:
       -
         name: Frontend Theme
         run: |
-          if [[ ${{ github.event_name }} == 'push' ]]; then
+          if [[ ${{ github.event_name }} == push ]]; then
               FRONTEND_THEME='pushdefault' >> $GITHUB_ENV
           else
               FRONTEND_THEME=${{ github.event.inputs.FRONTEND_THEME }} >> $GITHUB_ENV
