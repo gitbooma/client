@@ -1,21 +1,19 @@
 name: ci
 
 on:
-  #push:
-   # branches:
-    #  - 'master'
-  #pull_request:
-   # branches: [ "master" ] 
+  push:
+   branches:
+    - 'master'
     
   workflow_dispatch:
     inputs:
       FRONTEND_THEME:
         description: 'Provide Frontend Theme'     
-        required: true
-        default: 'default'
+        required: true        
 
 env:
-  FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }}
+  if: ${{ github.event_name == 'push' }}
+  FRONTEND_THEME: default
   
 jobs:
   docker:
@@ -39,10 +37,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Get the Theme
-        run: |
-          echo "Frontend_Theme: ${{ github.event.inputs.FRONTEND_THEME }}"
-          echo ${{ github.event.inputs.FRONTEND_THEME }}
       -
         name: Build and push
         uses: docker/build-push-action@v3
