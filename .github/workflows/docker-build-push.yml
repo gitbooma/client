@@ -11,20 +11,15 @@ on:
         description: 'Provide Frontend Theme'     
         required: true
 jobs:
-  docker:
+  docker-default:
+    if: ${{ github.event_name == 'push' }}
+    env:
+      FRONTEND_THEME: default
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Frontend Theme
-        run: |
-          if [[ ${{ github.event_name }} == push ]]; then
-              FRONTEND_THEME='pushdefault' >> $GITHUB_ENV
-          else
-              FRONTEND_THEME=${{ github.event.inputs.FRONTEND_THEME }} >> $GITHUB_ENV
-          fi
       -
         name: Docker meta
         id: meta
@@ -45,4 +40,36 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}      
+          password: ${{ secrets.DOCKERHUB_TOKEN }}    
+          
+          
+          
+  docker-manual:
+    env:
+      FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }}
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: boomadevops/infocompass-client-theme
+          tags: |
+            type=raw,value=${{env.FRONTEND_THEME}}-{{sha}}
+             
+      -
+        name: check
+        run:  |
+            echo "FT= ${{env.FRONTEND_THEME}}"
+            echo ${{env.FRONTEND_THEME}}
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  
