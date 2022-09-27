@@ -45,6 +45,7 @@ jobs:
           
           
   docker-manual:
+    if: ${{ github.event_name != 'push' }}
     env:
       FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }}
     runs-on: ubuntu-latest
