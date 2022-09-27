@@ -26,23 +26,25 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: boomadevops/infocompass-client-theme
+          images: boomadevops/infocompass-client
           tags: |
             type=raw,value=${{env.FRONTEND_THEME}}-{{sha}}
-             
-      -
-        name: check
-        run:  |
-            echo "FT= ${{env.FRONTEND_THEME}}"
-            echo ${{env.FRONTEND_THEME}}
       -
         name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}    
-          
-          
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: FRONTEND_THEME=${{ env.FRONTEND_THEME }}
+                  
           
   docker-manual:
     if: ${{ github.event_name != 'push' }}
@@ -59,18 +61,22 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           # list of Docker images to use as base name for tags
-          images: boomadevops/infocompass-client-theme
+          images: boomadevops/infocompass-client
           tags: |
             type=raw,value=${{env.FRONTEND_THEME}}-{{sha}}
-             
-      -
-        name: check
-        run:  |
-            echo "FT= ${{env.FRONTEND_THEME}}"
-            echo ${{env.FRONTEND_THEME}}
       -
         name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}  
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: FRONTEND_THEME=${{ env.FRONTEND_THEME }}
+      
