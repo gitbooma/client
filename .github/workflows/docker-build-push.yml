@@ -10,12 +10,6 @@ on:
       FRONTEND_THEME:
         description: 'Provide Frontend Theme'     
         required: true
-        default: 'default'
-
-env:
-  if: ${{ github.event_name == 'push' }}
-  FRONTEND_THEME: default
-    
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -23,6 +17,16 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
+      -
+        name: Frontend Theme
+        run: |
+          if [[ ${{ github.event_name }} == 'push' ]]; then
+          env:
+            FRONTEND_THEME: pushdefault
+          else
+          env:
+            FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }}
+          fi
       -
         name: Docker meta
         id: meta
@@ -32,18 +36,15 @@ jobs:
           images: boomadevops/infocompass-client-theme
           tags: |
             type=raw,value=${{env.FRONTEND_THEME}}-{{sha}}
+             
+      -
+        name: check
+        run:  |
+            echo ${{FRONTEND_THEME}}
+            echo ${{env.FRONTEND_THEME}}
       -
         name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: FRONTEND_THEME=${{ env.FRONTEND_THEME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}      
