@@ -40,7 +40,7 @@ jobs:
       -
         name: check
         run:  |
-            echo ${{FRONTEND_THEME}}
+            echo "FT= ${{env.FRONTEND_THEME}}"
             echo ${{env.FRONTEND_THEME}}
       -
         name: Login to DockerHub
