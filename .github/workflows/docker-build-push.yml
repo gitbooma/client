@@ -21,11 +21,9 @@ jobs:
         name: Frontend Theme
         run: |
           if [[ ${{ github.event_name }} == 'push' ]]; then
-          env:
-            FRONTEND_THEME: pushdefault
+              FRONTEND_THEME: pushdefault >> $GITHUB_ENV
           else
-          env:
-            FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }}
+              FRONTEND_THEME: ${{ github.event.inputs.FRONTEND_THEME }} >> $GITHUB_ENV
           fi
       -
         name: Docker meta
